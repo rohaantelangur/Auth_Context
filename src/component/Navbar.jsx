@@ -1,40 +1,88 @@
-import {  Button, Heading, HStack, Text } from "@chakra-ui/react";
 import React, { useContext } from "react";
+import {
+  Box,
+  Flex,
+  Avatar,
+  HStack,
+  IconButton,
+  Button,
+  Menu,
+  MenuButton,
+  MenuList,
+  MenuItem,
+  MenuDivider,
+  useDisclosure,
+  useColorModeValue,
+  Stack,
+} from "@chakra-ui/react";
+import { HamburgerIcon, CloseIcon } from "@chakra-ui/icons";
+import { Link } from "react-router-dom";
 import { Authcontext } from "../context/Authcontext";
-import Status from "./Status";
 
-const Navbar = () => {
-  const { auth, toggleAuth } = useContext(Authcontext);
+export default function Navbar() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const { auth } = useContext(Authcontext);
 
   return (
-    <div>
-      <HStack spacing='14%' m={'20px'}>
-        <Heading color={"orange.400"}>Navbar</Heading>
-        <Text color={'green.400'} fontWeight={'600'} fontSize={'16px'}>Home</Text>
-        <Text color={'green.400'} fontWeight={'600'} fontSize={'16px'}>About</Text>
-        <Text color={'green.400'} fontWeight={'600'} fontSize={'16px'}>Profile</Text>
-        <Text color={'green.400'} fontWeight={'600'} fontSize={'16px'}>Gallery</Text>
+    <>
+      <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+        <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
+          <IconButton
+            size={"md"}
+            icon={isOpen ? <CloseIcon /> : <HamburgerIcon />}
+            aria-label={"Open Menu"}
+            display={{ md: "none" }}
+            onClick={isOpen ? onClose : onOpen}
+          />
+          <HStack spacing={8} alignItems={"center"}>
+            <Box>Logo</Box>
+            <HStack
+              as={"nav"}
+              spacing={4}
+              display={{ base: "none", md: "flex" }}
+            >
+              <Link to="/">Home</Link>
+              <Link to="/Profile">Profile</Link>
+            </HStack>
+          </HStack>
+          <Flex alignItems={"center"}>
+            <Menu>
+              <MenuButton
+                as={Button}
+                rounded={"full"}
+                variant={"link"}
+                cursor={"pointer"}
+                minW={0}
+              >
+                {auth ? (
+                  <Avatar
+                    size={"sm"}
+                    src={
+                      "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
+                    }
+                  />
+                ) : (
+                  <Avatar size={"sm"} />
+                )}
+              </MenuButton>
+              <MenuList>
+                <MenuItem>Link 1</MenuItem>
+                <MenuItem>Link 2</MenuItem>
+                <MenuDivider />
+                <MenuItem>Link 3</MenuItem>
+              </MenuList>
+            </Menu>
+          </Flex>
+        </Flex>
 
-        <Button
-          as="button"
-          size='lg'
-          borderRadius="md"
-          color="white"
-          m={'10px'}        
-          colorScheme="blue"
+        {isOpen ? (
+          <Box pb={4} display={{ md: "none" }}>
+            <Stack as={"nav"} spacing={4}></Stack>
+          </Box>
+        ) : null}
+      </Box>
 
-          onClick={() => {
-            toggleAuth()
-            console.log(auth)
-          }}
-        >
-          {!auth ? "Log-out" : "Log-in"}
-        </Button>
-      </HStack>
-      <br />
-      <Status />
-    </div>
+      {/* <Box p={4}>Main Content Here</Box> */}
+    </>
   );
-};
-
-export default Navbar;
+}

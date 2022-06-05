@@ -1,3 +1,4 @@
+import { Navigate } from "react-router-dom";
 import {
     Flex,
     Box,
@@ -6,7 +7,6 @@ import {
     Input,
     Checkbox,
     Stack,
-    Link,
     Button,
     Heading,
     Text,
@@ -16,7 +16,7 @@ import { useContext, useState } from 'react';
 import { Authcontext } from '../context/Authcontext';
   
   export default function SimpleCard() {
-  const { gettoken, token, settoken, auth, setauth} = useContext(Authcontext);
+  const { gettoken, auth, setauth} = useContext(Authcontext);
   const [logincread, setlogincread] = useState({
       Email:"",
       Pass:'',
@@ -33,14 +33,11 @@ const {name, value}=e.target
 const handleOnsubmit=()=>{
     gettoken(logincread.Email,logincread.Pass)
     setauth(true)
-    console.log(logincread.Email,logincread.Pass,token,auth);
+    // console.log(logincread.Email,logincread.Pass,token,auth);
 }
-if(auth){
-    <Navigate to="statuse"/> 
-}
-    return (
-        <>
-        
+  return (
+    <>
+    {auth ? <Navigate to="/profile"/>  : ""}
       <Flex
         minH={'100vh'}
         align={'center'}
@@ -50,7 +47,7 @@ if(auth){
           <Stack align={'center'}>
             <Heading fontSize={'4xl'}>Sign in to your account</Heading>
             <Text fontSize={'lg'} color={'gray.600'}>
-              to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️
+              {/* to enjoy all of our cool <Link color={'blue.400'}>features</Link> ✌️ */}
             </Text>
           </Stack>
           <Box
@@ -73,7 +70,7 @@ if(auth){
                   align={'start'}
                   justify={'space-between'}>
                   <Checkbox>Remember me</Checkbox>
-                  <Link color={'blue.400'}>Forgot password?</Link>
+                  {/* <Link color={'blue.400'}>Forgot password?</Link> */}
                 </Stack>
                 <Button
                   bg={'blue.400'}
@@ -90,13 +87,9 @@ if(auth){
         </Stack>
       </Flex>
     
-            <>
-      {auth ?( "Your Token is : " + token ):  ( "Status : Log-Out ")}
-      <button onClick={()=>{
-          setauth(false)
-          settoken("")
-        }}>Logout</button>
-        </>
+          
+
+      
       </>
     );
   }

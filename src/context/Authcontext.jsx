@@ -24,13 +24,10 @@ export const AuthcontextProvider = ({ children }) => {
   }
 
 
-  const toggleAuth = () => {
-    setauth(!auth);
-    gettoken()
-  };
+  
 
   return (
-    <Authcontext.Provider value={{ auth, toggleAuth ,token, settoken, gettoken, setauth}}>
+    <Authcontext.Provider value={{ auth ,token, settoken, gettoken, setauth}}>
       {children}
     </Authcontext.Provider>
   );
